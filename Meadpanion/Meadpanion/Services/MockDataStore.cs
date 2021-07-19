@@ -47,14 +47,19 @@ namespace Meadpanion.Services
             return await Task.FromResult(true);
         }
 
-        public async Task<Item> GetItemAsync(string id)
+        public async Task<Item> GetItemAsync(int id)
         {
-            return await Task.FromResult(items.FirstOrDefault(s => s.Id == id));
+            return await Task.FromResult(items.FirstOrDefault(s => s.Id == id.ToString()));
         }
 
         public async Task<IEnumerable<Item>> GetItemsAsync(bool forceRefresh = false)
         {
             return await Task.FromResult(items);
+        }
+
+        Task<bool> IDataStore<Item>.DeleteItemAsync(Item item)
+        {
+            throw new NotImplementedException();
         }
     }
 }

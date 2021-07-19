@@ -3,16 +3,19 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Meadpanion.Services;
 
 namespace Meadpanion.ViewModels
 {
     [QueryProperty(nameof(ItemId), nameof(ItemId))]
     public class MeadsDetailViewModel : BaseViewModel
     {
-        private string itemId;
+        public IDataStore<Mead> DataStore => DependencyService.Get<IDataStore<Mead>>();
+
+        private int MeadId;
         private string text;
         private string description;
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         public string Text
         {
@@ -26,27 +29,27 @@ namespace Meadpanion.ViewModels
             set => SetProperty(ref description, value);
         }
 
-        public string ItemId
+        public int ItemId
         {
             get
             {
-                return itemId;
+                return MeadId;
             }
             set
             {
-                itemId = value;
+                MeadId = value;
                 LoadItemId(value);
             }
         }
 
-        public async void LoadItemId(string itemId)
+        public async void LoadItemId(int itemId)
         {
             try
             {
                 var item = await DataStore.GetItemAsync(itemId);
-                Id = item.Id;
-                Text = item.Text;
-                Description = item.Description;
+                Id = item.ID;
+                Text = item.Name;
+                Description = item.Name;
             }
             catch (Exception)
             {

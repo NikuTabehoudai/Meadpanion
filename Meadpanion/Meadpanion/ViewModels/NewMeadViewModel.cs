@@ -4,11 +4,14 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
+using Meadpanion.Services;
 
 namespace Meadpanion.ViewModels
 {
     public class NewMeadViewModel : BaseViewModel
     {
+        public IDataStore<Mead> DataStore => DependencyService.Get<IDataStore<Mead>>();
+
         private string text;
         private string description;
 
@@ -49,14 +52,12 @@ namespace Meadpanion.ViewModels
 
         private async void OnSave()
         {
-            Item newItem = new Item()
+            Mead newMead = new Mead()
             {
-                Id = Guid.NewGuid().ToString(),
-                Text = Text,
-                Description = Description
+                Name = text
             };
 
-            await DataStore.AddItemAsync(newItem);
+            await DataStore.AddItemAsync(newMead);
 
             // This will pop the current page off the navigation stack
             await Shell.Current.GoToAsync("..");
