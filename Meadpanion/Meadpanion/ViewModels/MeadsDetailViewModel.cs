@@ -7,37 +7,29 @@ using Meadpanion.Services;
 
 namespace Meadpanion.ViewModels
 {
-    [QueryProperty(nameof(ItemId), nameof(ItemId))]
     public class MeadsDetailViewModel : BaseViewModel
     {
         public IDataStore<Mead> DataStore => DependencyService.Get<IDataStore<Mead>>();
 
-        private int MeadId;
-        private string text;
-        private string description;
+        private int meadID;
+        private string name;
         public int Id { get; set; }
 
-        public string Text
+        public string Name
         {
-            get => text;
-            set => SetProperty(ref text, value);
+            get => name;
+            set => SetProperty(ref name, value);
         }
 
-        public string Description
-        {
-            get => description;
-            set => SetProperty(ref description, value);
-        }
-
-        public int ItemId
+        public int MeadID
         {
             get
             {
-                return MeadId;
+                return MeadID;
             }
             set
             {
-                MeadId = value;
+                MeadID = value;
                 LoadItemId(value);
             }
         }
@@ -47,9 +39,8 @@ namespace Meadpanion.ViewModels
             try
             {
                 var item = await DataStore.GetItemAsync(itemId);
-                Id = item.ID;
-                Text = item.Name;
-                Description = item.Name;
+                meadID = item.ID;
+                name = item.Name;
             }
             catch (Exception)
             {

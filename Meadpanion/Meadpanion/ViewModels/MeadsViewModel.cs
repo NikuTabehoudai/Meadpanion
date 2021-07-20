@@ -33,6 +33,7 @@ namespace Meadpanion.ViewModels
 
         async Task ExecuteLoadItemsCommand()
         {
+
             IsBusy = true;
 
             try
@@ -81,7 +82,7 @@ namespace Meadpanion.ViewModels
                 return;
 
             // This will push the ItemDetailPage onto the navigation stack
-            await Shell.Current.GoToAsync($"{nameof(MeadsDetailPage)}?{nameof(MeadsDetailViewModel.ItemId)}={item.ID}");
+            await Shell.Current.GoToAsync($"{nameof(MeadsDetailPage)}?{nameof(MeadsDetailViewModel.MeadID)}={item.ID}");
         }
     }
 }
