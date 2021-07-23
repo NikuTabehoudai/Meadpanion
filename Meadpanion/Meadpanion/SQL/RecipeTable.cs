@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using SQLite;
 
-namespace Meadpanion.Models
+namespace Meadpanion.SQL
 {
-    public class Recipe
+    public class RecipeTable
     {
+        [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
         public string Name { get; set; }
+        public string Ingredients { get; set; }
         public string Note { get; set; }
-    }   
+    }
 }

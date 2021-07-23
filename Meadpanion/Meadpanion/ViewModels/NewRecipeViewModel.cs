@@ -4,11 +4,15 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
+using Meadpanion.Services; 
 
 namespace Meadpanion.ViewModels
 {
     public class NewRecipeViewModel : BaseViewModel
     {
+
+        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
+
         private string text;
         private string description;
 

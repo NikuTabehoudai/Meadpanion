@@ -5,40 +5,44 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Meadpanion.Services;
 
 namespace Meadpanion.ViewModels
 {
     public class MeadsViewModel : BaseViewModel
     {
-        private Item _selectedItem;
+        public IDataStore<Mead> MeadDataStore => DependencyService.Get<IDataStore<Mead>>();
 
-        public ObservableCollection<Item> Items { get; }
-        public Command LoadItemsCommand { get; }
+        private Mead _selectedItem;
+
+        public ObservableCollection<Mead> Meads { get; }
+        public Command LoadMeadsCommand { get; }
         public Command AddItemCommand { get; }
-        public Command<Item> ItemTapped { get; }
+        public Command<Mead> ItemTapped { get; }
 
         public MeadsViewModel()
         {
             Title = "Browse Meads";
-            Items = new ObservableCollection<Item>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            Meads = new ObservableCollection<Mead>();
+            LoadMeadsCommand = new Command(async () => await ExecuteLoadMeadsCommand());
 
-            ItemTapped = new Command<Item>(OnItemSelected);
+            ItemTapped = new Command<Mead>(OnItemSelected);
 
             AddItemCommand = new Command(OnAddItem);
         }
 
-        async Task ExecuteLoadItemsCommand()
+        async Task ExecuteLoadMeadsCommand()
         {
+
             IsBusy = true;
 
             try
             {
-                Items.Clear();
-                var items = await DataStore.GetItemsAsync(true);
+                Meads.Clear();
+                var items = await MeadDataStore.GetItemsAsync(true);
                 foreach (var item in items)
                 {
-                    Items.Add(item);
+                    Meads.Add(item);
                 }
             }
             catch (Exception ex)
@@ -57,7 +61,7 @@ namespace Meadpanion.ViewModels
             SelectedItem = null;
         }
 
-        public Item SelectedItem
+        public Mead SelectedItem
         {
             get => _selectedItem;
             set
@@ -72,13 +76,13 @@ namespace Meadpanion.ViewModels
             await Shell.Current.GoToAsync(nameof(NewMeadPage));
         }
 
-        async void OnItemSelected(Item item)
+        async void OnItemSelected(Mead item)
         {
             if (item == null)
                 return;
 
-            // This will push the ItemDetailPage onto the navigation stack
-            await Shell.Current.GoToAsync($"{nameof(MeadsDetailPage)}?{nameof(MeadsDetailViewModel.ItemId)}={item.Id}");
+            // This will push the MeadDetailPage onto the navigation stack
+            await Shell.Current.GoToAsync($"{nameof(MeadsDetailPage)}?{nameof(MeadsDetailViewModel.MeadID)}={item.ID}");
         }
     }
 }

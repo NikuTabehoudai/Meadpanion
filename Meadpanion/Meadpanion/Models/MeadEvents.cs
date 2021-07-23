@@ -4,9 +4,11 @@ using System.Text;
 
 namespace Meadpanion.Models
 {
-    class Readings
+    public class MeadEvents
     {
+        public int ID { get; set; }
         public DateTime Date { get; set; }
-        public float GravityReading { get; set; }
+        public string Name { get; set; }
+        public string Note { get; set; }
     }
 }

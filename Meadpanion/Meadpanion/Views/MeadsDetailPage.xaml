@@ -1,14 +1,54 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Meadpanion.ViewModels"
              x:Class="Meadpanion.Views.MeadsDetailPage"
              Title="{Binding Title}">
 
-    <StackLayout Spacing="20" Padding="15">
-        <Label Text="Text:" FontSize="Medium" />
-        <Label Text="{Binding Text}" FontSize="Small"/>
-        <Label Text="Description:" FontSize="Medium" />
-        <Label Text="{Binding Description}" FontSize="Small"/>
-    </StackLayout>
-    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Order="Secondary" Priority="1" Name="Events" />
+        <ToolbarItem Order="Secondary" Priority="1" Name="Readings" />
+        <ToolbarItem Order="Primary" Priority="1" Name="Edit" Command="{Binding EditMeadCommand}"/>
+    </ContentPage.ToolbarItems>
+        <StackLayout>
+            <StackLayout HorizontalOptions="Center" Orientation="Vertical">
+                <Label Text="Recipe:" FontSize="Small" HorizontalTextAlignment="Center"/>
+                <Label Text="{Binding RecipeName, Mode=TwoWay}" FontSize="Medium" HorizontalTextAlignment="Center"/>
+            </StackLayout>
+            <StackLayout HorizontalOptions="Center" Orientation="Vertical">
+                <Label Text="Start Date:" FontSize="Small" HorizontalTextAlignment="Center"/>
+                <Label Text="{Binding Date, Mode=TwoWay}" FontSize="Medium" HorizontalTextAlignment="Center"/>
+            </StackLayout>
+            <Grid>
+                <StackLayout Grid.Row="0" HorizontalOptions="Center" Orientation="Horizontal" Spacing="50">
+                    <Label Text="Starting Gravity:" FontSize="Medium" HorizontalTextAlignment="Start"/>
+                    <Label Text="Potential ABV:" FontSize="Medium" HorizontalTextAlignment="End" />
+                </StackLayout>
+                <StackLayout Grid.Row="1" HorizontalOptions="Center" Orientation="Horizontal" Spacing="150">
+                    <Label Text="{Binding StartingGravity, Mode=TwoWay}" FontSize="Medium" HorizontalTextAlignment="Start"/>
+                    <Label Text="{Binding PotentialABV, Mode=TwoWay}" FontSize="Medium" HorizontalTextAlignment="End"/>
+                </StackLayout>
+                <StackLayout Grid.Row="2" HorizontalOptions="Center" Orientation="Horizontal" Spacing="55">
+                    <Label Text="Current Gravity:" FontSize="Medium" HorizontalTextAlignment="Start"/>
+                    <Label Text="Current ABV:" FontSize="Medium" HorizontalTextAlignment="End" />
+                </StackLayout>
+                <StackLayout Grid.Row="3" HorizontalOptions="Center" Orientation="Horizontal" Spacing="150">
+                    <Label Text="{Binding CurrentGravity, Mode=TwoWay}" FontSize="Medium" HorizontalTextAlignment="Start"/>
+                    <Label Text="{Binding CurrentABV, Mode=TwoWay}" FontSize="Medium" HorizontalTextAlignment="End"/>
+                </StackLayout>
+            </Grid>
+            <StackLayout HorizontalOptions="Center" Orientation="Vertical">
+                <Label Text="Amount" FontSize="Small" HorizontalTextAlignment="Center"/>
+                <Label Text="{Binding Amount, Mode=TwoWay}" FontSize="Medium" HorizontalTextAlignment="Center"/>
+            </StackLayout>
+            <StackLayout HorizontalOptions="Center" Orientation="Vertical">
+                <Label Text="Status" FontSize="Small" HorizontalTextAlignment="Center"/>
+                <Label Text="{Binding Status, Mode=TwoWay}" FontSize="Medium" HorizontalTextAlignment="Center"/>
+            </StackLayout>
+            <StackLayout HorizontalOptions="Center" Orientation="Vertical">
+                <Label Text="Note" FontSize="Small" HorizontalTextAlignment="Center"/>
+                <Label Text="{Binding Note, Mode=TwoWay}" FontSize="Medium" HorizontalTextAlignment="Center"/>
+            </StackLayout>
+
+        </StackLayout>
 </ContentPage>

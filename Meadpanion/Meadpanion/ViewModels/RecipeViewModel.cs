@@ -5,11 +5,15 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Meadpanion.Services;
 
 namespace Meadpanion.ViewModels
 {
     public class RecipeViewModel : BaseViewModel
     {
+        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
+
+
         private Item _selectedItem;
 
         public ObservableCollection<Item> Items { get; }

@@ -4,19 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Meadpanion.ViewModels;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace Meadpanion.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class NewMeadPage : ContentPage
+    public partial class EditMeadPage : ContentPage
     {
-        public NewMeadPage()
+        public EditMeadPage()
         {
             InitializeComponent();
-            BindingContext = new NewMeadViewModel();
+            BindingContext = new EditMeadViewModel();
         }
 
         protected override void OnAppearing()

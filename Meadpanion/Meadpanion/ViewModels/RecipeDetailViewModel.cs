@@ -3,12 +3,14 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Meadpanion.Services;
 
 namespace Meadpanion.ViewModels
 {
     [QueryProperty(nameof(ItemId), nameof(ItemId))]
     public class RecipeDetailViewModel : BaseViewModel
     {
+        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
         private string itemId;
         private string text;
         private string description;
@@ -43,7 +45,7 @@ namespace Meadpanion.ViewModels
         {
             try
             {
-                var item = await DataStore.GetItemAsync(itemId);
+                var item = await DataStore.GetItemAsync(int.Parse(itemId));
                 Id = item.Id;
                 Text = item.Text;
                 Description = item.Description;
