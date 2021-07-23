@@ -1,38 +1,43 @@
 ﻿using Meadpanion.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Input;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Meadpanion.Services;
-using System.Threading.Tasks;
-using System.Diagnostics;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Meadpanion.ViewModels
 {
-    public class NewMeadViewModel : BaseViewModel
+    [QueryProperty(nameof(MeadID), nameof(MeadID))]
+    public class EditMeadViewModel : BaseViewModel
     {
         public IDataStore<Mead> MeadDataStore => DependencyService.Get<IDataStore<Mead>>();
         public IDataStore<Recipe> RecipeDataStore => DependencyService.Get<IDataStore<Recipe>>();
 
+        public Mead Mead { get; set; }
+
+        private int meadID;
         private string name;
         private string recipe;
-        private DateTime date = DateTime.Today;
-        private float startingGravity = 1.010f;
+        private DateTime date;
+        private float startingGravity;
         private float amount;
         private string note;
         private List<Recipe> recipeList = new List<Recipe>();
         private Recipe selectedRecipe;
 
 
-        public NewMeadViewModel()
+        public EditMeadViewModel()
         {
             SaveCommand = new Command(OnSave, ValidateSave);
             CancelCommand = new Command(OnCancel);
             this.PropertyChanged +=
                 (_, __) => SaveCommand.ChangeCanExecute();
             LoadRecipe();
+
         }
+
 
         async void LoadRecipe()
         {
@@ -48,6 +53,30 @@ namespace Meadpanion.ViewModels
             {
                 Debug.WriteLine(ex);
             }
+        }
+
+        async void LoadMeadByID()
+        {
+            try
+            {
+                var mead = await MeadDataStore.GetItemAsync(meadID);
+                SetProperies();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }
+
+        private void SetProperies()
+        {
+            Name = Mead.Name;
+            Date = Mead.Date;
+            StartingGravity = Mead.Readings[0].GravityReading;
+            Amount = Mead.Amount;
+            Note = Mead.Note;
+            SelectedRecipe = recipeList.FirstOrDefault(s => s.ID == Mead.RecipeID);
+
         }
 
         #region Bindings
@@ -100,9 +129,22 @@ namespace Meadpanion.ViewModels
         }
 
         public Recipe SelectedRecipe
-        { 
-            get => selectedRecipe; 
-            set => SetProperty(ref selectedRecipe, value); 
+        {
+            get => selectedRecipe;
+            set => SetProperty(ref selectedRecipe, value);
+        }
+
+        public int MeadID
+        {
+            get
+            {
+                return meadID;
+            }
+            set
+            {
+                meadID = value;
+                LoadMeadByID();
+            }
         }
 
         #endregion
@@ -118,23 +160,24 @@ namespace Meadpanion.ViewModels
 
         private async void OnSave()
         {
+            Mead.Readings[0].GravityReading = startingGravity;
             Mead newMead = new Mead()
             {
+                ID = meadID,
                 Name = name,
                 RecipeID = selectedRecipe.ID,
                 Date = date,
                 Amount = amount,
                 Note = note,
                 Active = true,
-                Readings = new List<Reading>() { new Reading() { Date = date, GravityReading = startingGravity, Note = "Original Gravity" } },
-                Events = new List<MeadEvents>()
-                
+                Readings = Mead.Readings,
+                Events = Mead.Events
             };
 
-            await MeadDataStore.AddItemAsync(newMead);
+            await MeadDataStore.UpdateItemAsync(newMead);
 
             // This will pop the current page off the navigation stack
-            await Shell.Current.GoToAsync("..");
+            await Shell.Current.GoToAsync("../..");
         }
     }
 }

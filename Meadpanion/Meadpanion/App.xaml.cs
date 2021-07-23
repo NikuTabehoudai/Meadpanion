@@ -28,7 +28,7 @@ namespace Meadpanion
             InitializeComponent();
 
             DependencyService.Register<MeadDataStore>();
-            DependencyService.Register<MockDataStore>();
+            DependencyService.Register<RecipeDataStore>();
             MainPage = new AppShell();
         }
 

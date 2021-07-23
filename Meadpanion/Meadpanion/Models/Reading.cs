@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Meadpanion.Models
 {
-    public class Readings
+    public class Reading
     {
         public int ID { get; set; }
         public DateTime Date { get; set; }

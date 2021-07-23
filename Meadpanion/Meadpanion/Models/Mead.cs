@@ -9,11 +9,12 @@ namespace Meadpanion.Models
     {
         public int ID { get; set; }
         public string Name { get; set; }
+        public DateTime Date { get; set; }
         public int RecipeID { get; set; }
         public bool Active { get; set; }
         public float Amount { get; set; }
         public List<MeadEvents> Events { get; set; }
-        public List<Readings> Readigns { get; set; }
+        public List<Reading> Readings { get; set; }
         public string Note { get; set; }
     }
 }

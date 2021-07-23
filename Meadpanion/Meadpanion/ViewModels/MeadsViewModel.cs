@@ -11,12 +11,12 @@ namespace Meadpanion.ViewModels
 {
     public class MeadsViewModel : BaseViewModel
     {
-        public IDataStore<Mead> DataStore => DependencyService.Get<IDataStore<Mead>>();
+        public IDataStore<Mead> MeadDataStore => DependencyService.Get<IDataStore<Mead>>();
 
         private Mead _selectedItem;
 
         public ObservableCollection<Mead> Meads { get; }
-        public Command LoadItemsCommand { get; }
+        public Command LoadMeadsCommand { get; }
         public Command AddItemCommand { get; }
         public Command<Mead> ItemTapped { get; }
 
@@ -24,14 +24,14 @@ namespace Meadpanion.ViewModels
         {
             Title = "Browse Meads";
             Meads = new ObservableCollection<Mead>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            LoadMeadsCommand = new Command(async () => await ExecuteLoadMeadsCommand());
 
             ItemTapped = new Command<Mead>(OnItemSelected);
 
             AddItemCommand = new Command(OnAddItem);
         }
 
-        async Task ExecuteLoadItemsCommand()
+        async Task ExecuteLoadMeadsCommand()
         {
 
             IsBusy = true;
@@ -39,7 +39,7 @@ namespace Meadpanion.ViewModels
             try
             {
                 Meads.Clear();
-                var items = await DataStore.GetItemsAsync(true);
+                var items = await MeadDataStore.GetItemsAsync(true);
                 foreach (var item in items)
                 {
                     Meads.Add(item);
@@ -81,7 +81,7 @@ namespace Meadpanion.ViewModels
             if (item == null)
                 return;
 
-            // This will push the ItemDetailPage onto the navigation stack
+            // This will push the MeadDetailPage onto the navigation stack
             await Shell.Current.GoToAsync($"{nameof(MeadsDetailPage)}?{nameof(MeadsDetailViewModel.MeadID)}={item.ID}");
         }
     }
