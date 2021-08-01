@@ -8,7 +8,7 @@ namespace Meadpanion.Util
     {
         public static string CalculateABV(float originalGravity, float currentGravity)
         {
-            return ((originalGravity - currentGravity) * 131.25f).ToString("0.00");
+            return ((originalGravity - currentGravity) * 131.25f).ToString("0.00") + "%";
         }
 
 

@@ -6,6 +6,7 @@ using Xamarin.Forms;
 using Meadpanion.Services;
 using Meadpanion.Util;
 using Meadpanion.Views;
+using System.Collections.Generic;
 
 namespace Meadpanion.ViewModels
 {
@@ -14,13 +15,15 @@ namespace Meadpanion.ViewModels
     {
         public IDataStore<Mead> MeadDataStore => DependencyService.Get<IDataStore<Mead>>();
         public IDataStore<Recipe> RecipeDataStore => DependencyService.Get<IDataStore<Recipe>>();
+        public IDataStore<Reading> ReadingDataStore => DependencyService.Get<IDataStore<Reading>>();
+
 
         private int meadID;
         private string date;
         private string recipeName;
-        private float startingGravity;
+        private string startingGravity;
         private string potentialABV;
-        private float currentGravity;
+        private string currentGravity;
         private string currentABV;
         private string amount;
         private string status;
@@ -28,11 +31,14 @@ namespace Meadpanion.ViewModels
         public int Id { get; set; }
 
         public Command EditMeadCommand { get; }
+        public Command ReadingsCommand { get; }
+        public Command DeleteMeadCommand { get; set; }
 
         public MeadsDetailViewModel()
         {
             EditMeadCommand = new Command(OnEditMead);
-
+            ReadingsCommand = new Command(OnReadings);
+            DeleteMeadCommand = new Command(OnDeleteMead);
         }
 
         #region Bindings
@@ -49,7 +55,7 @@ namespace Meadpanion.ViewModels
             set => SetProperty(ref recipeName, value);
         }
         
-        public float StartingGravity
+        public string StartingGravity
         {
             get => startingGravity;
             set => SetProperty(ref startingGravity, value);
@@ -61,7 +67,7 @@ namespace Meadpanion.ViewModels
             set => SetProperty(ref potentialABV, value);
         }
 
-        public float CurrentGravity
+        public string CurrentGravity
         {
             get => currentGravity;
             set => SetProperty(ref currentGravity, value);
@@ -113,14 +119,19 @@ namespace Meadpanion.ViewModels
             {
                 var mead = await MeadDataStore.GetItemAsync(itemId);
                 var recipe = await RecipeDataStore.GetItemAsync(mead.RecipeID);
+                var readings = await ReadingDataStore.GetItemsAsync(itemId);
+                List<Reading> readingsList = new List<Reading>();
+                foreach (var item in readings)
+                    readingsList.Add(item);
+
                 meadID = mead.ID;
                 Title = mead.Name;
                 Date = mead.Date.ToString("dd.MM.yyyy");
                 RecipeName = recipe.Name;
-                StartingGravity = mead.Readings[0].GravityReading;
-                PotentialABV = Util.ABVCalculator.CalculateABV(startingGravity, 1.000f) + "%";
-                CurrentGravity = mead.Readings[mead.Readings.Count -1].GravityReading;
-                CurrentABV = Util.ABVCalculator.CalculateABV(startingGravity, currentGravity) + "%";
+                StartingGravity = readingsList[0].GravityReading.ToString("0.000");
+                PotentialABV = Util.ABVCalculator.CalculateABV(readingsList[0].GravityReading, 1.000f);
+                CurrentGravity = readingsList[readingsList.Count -1 ].GravityReading.ToString("0.000");
+                CurrentABV = Util.ABVCalculator.CalculateABV(readingsList[0].GravityReading, readingsList[readingsList.Count - 1].GravityReading);
                 Amount = mead.Amount +"L";
                 if (mead.Active) Status = "Active";
                 else Status = "Inactive";
@@ -137,6 +148,28 @@ namespace Meadpanion.ViewModels
         {
             // This will push the MeadDetailPage onto the navigation stack
             await Shell.Current.GoToAsync($"{nameof(EditMeadPage)}?{nameof(EditMeadViewModel.MeadID)}={meadID}");
+        }
+
+        async void OnReadings(object obj)
+        {
+            // This will push the MeadDetailPage onto the navigation stack
+            await Shell.Current.GoToAsync($"{nameof(ReadingsPage)}?{nameof(ReadingsViewModel.MeadID)}={meadID}");
+        }
+
+        async void OnDeleteMead()
+        {
+            bool answer = await App.Current.MainPage.DisplayAlert("Deleting Mead", "Are you sure you want to delete the mead: " + Title, "Yes", "No");
+            if (answer)
+            {
+                var readings = await ReadingDataStore.GetItemsAsync(meadID);
+                foreach (var item in readings)
+                {
+                    await ReadingDataStore.DeleteItemAsync(item.ID);
+                } 
+                //TODO: Add Delete events.
+                await MeadDataStore.DeleteItemAsync(meadID);
+                await Shell.Current.GoToAsync("..");
+            }
         }
     }
 }

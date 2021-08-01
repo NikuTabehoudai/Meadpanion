@@ -39,7 +39,7 @@ namespace Meadpanion.ViewModels
             try
             {
                 Items.Clear();
-                var items = await DataStore.GetItemsAsync(true);
+                var items = await DataStore.GetItemsAsync(0);
                 foreach (var item in items)
                 {
                     Items.Add(item);

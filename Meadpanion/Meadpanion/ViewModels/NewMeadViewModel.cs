@@ -14,11 +14,12 @@ namespace Meadpanion.ViewModels
     {
         public IDataStore<Mead> MeadDataStore => DependencyService.Get<IDataStore<Mead>>();
         public IDataStore<Recipe> RecipeDataStore => DependencyService.Get<IDataStore<Recipe>>();
+        public IDataStore<Reading> ReadingDataStore => DependencyService.Get<IDataStore<Reading>>();
 
         private string name;
         private string recipe;
         private DateTime date = DateTime.Today;
-        private float startingGravity = 1.010f;
+        private float startingGravity;
         private float amount;
         private string note;
         private List<Recipe> recipeList = new List<Recipe>();
@@ -38,7 +39,8 @@ namespace Meadpanion.ViewModels
         {
             try
             {
-                var items = await RecipeDataStore.GetItemsAsync(true);
+                //Item ID is not used for Recipe's
+                var items = await RecipeDataStore.GetItemsAsync(0);
                 foreach (var item in items)
                 {
                     recipeList.Add(item);
@@ -126,12 +128,10 @@ namespace Meadpanion.ViewModels
                 Amount = amount,
                 Note = note,
                 Active = true,
-                Readings = new List<Reading>() { new Reading() { Date = date, GravityReading = startingGravity, Note = "Original Gravity" } },
-                Events = new List<MeadEvents>()
-                
-            };
-
+             };
             await MeadDataStore.AddItemAsync(newMead);
+
+            await ReadingDataStore.AddItemAsync(new Reading() { MeadId = newMead.ID, Date = date, GravityReading = startingGravity, Note = "Original Gravity", ABV = "0", OriginalGravity = true }) ;
 
             // This will pop the current page off the navigation stack
             await Shell.Current.GoToAsync("..");

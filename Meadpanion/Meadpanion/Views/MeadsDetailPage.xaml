@@ -6,8 +6,9 @@
              Title="{Binding Title}">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Order="Secondary" Priority="1" Name="Events" />
-        <ToolbarItem Order="Secondary" Priority="1" Name="Readings" />
+        <!-- <ToolbarItem Order="Secondary" Priority="1" Name="Events" /> -->
+        <ToolbarItem Order="Secondary" Priority="2" Name="Delete Mead" Command="{Binding DeleteMeadCommand}"/>
+        <ToolbarItem Order="Secondary" Priority="1" Name="Readings" Command="{Binding ReadingsCommand}"/>
         <ToolbarItem Order="Primary" Priority="1" Name="Edit" Command="{Binding EditMeadCommand}"/>
     </ContentPage.ToolbarItems>
         <StackLayout>

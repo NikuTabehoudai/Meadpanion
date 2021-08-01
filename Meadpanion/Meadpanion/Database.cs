@@ -2,7 +2,7 @@
 using SQLite;
 using System.Threading.Tasks;
 using System;
-using Meadpanion.SQL;
+using Meadpanion.Models;
 
 namespace Meadpanion
 {
@@ -13,65 +13,160 @@ namespace Meadpanion
         public Database(string dbPath)
         {
             _database = new SQLiteAsyncConnection(dbPath);
-            _database.CreateTableAsync<MeadTable>().Wait();
-            _database.CreateTableAsync<ReadingsTable>().Wait();
-            _database.CreateTableAsync<EventsTable>().Wait();
-            _database.CreateTableAsync<RecipeTable>().Wait();
+            _database.CreateTableAsync<Mead>().Wait();
+            _database.CreateTableAsync<Reading>().Wait();
+            _database.CreateTableAsync<MeadEvents>().Wait();
+            _database.CreateTableAsync<Recipe>().Wait();
 
         }
 
-        public Task<List<MeadTable>> GetMeadsAsync()
+
+        #region Mead
+        public Task<List<Mead>> GetMeadsAsync()
         {
-            return _database.Table<MeadTable>().ToListAsync();
+            return _database.Table<Mead>().ToListAsync();
         }
 
-        public Task<List<ReadingsTable>> GetReadingsAsync()
-        {
-            return _database.Table<ReadingsTable>().ToListAsync();
-
-        }
-
-        public Task<List<EventsTable>> GetEventsAsync()
-        {
-            return _database.Table<EventsTable>().ToListAsync();
-
-        }
-
-        public Task<List<RecipeTable>> GetRecipeAsync()
-        {
-            return _database.Table<RecipeTable>().ToListAsync();
-
-        }
-
-        public Task<int> SaveMeadAsync(MeadTable mead)
+        public Task<int> SaveMeadAsync(Mead mead)
         {
             return _database.InsertAsync(mead);
         }
 
-        public Task<int> SaveEventsAsync(EventsTable events)
+        public Task<int> DeleteMeadAsync(Mead mead)
         {
-            return _database.InsertAsync(events);
+            return _database.DeleteAsync(mead);
         }
 
-        public Task<int> SaveReadingsAsync(ReadingsTable readings)
+        public Task<int> UpdateMeadAsync(Mead mead)
+        {
+            return _database.UpdateAsync(mead);
+        }
+
+        public Task<Mead> GetSingleMeadAsync(int ID)
+        {
+            return _database.Table<Mead>().Where(s => s.ID == ID).FirstAsync();
+        }
+
+
+        #endregion
+
+        #region Reading
+        public Task<List<Reading>> GetReadingsAsync(int ID)
+        {
+            return _database.Table<Reading>().Where(s => s.MeadId == ID).OrderBy<DateTime>(s => s.Date).ToListAsync();
+        }
+
+        public Task<int> SaveReadingsAsync(Reading readings)
         {
             return _database.InsertAsync(readings);
         }
 
-        public Task<int> SavePersonAsync(RecipeTable recipe)
+        public Task<int> DeleteReadingAsync(Reading readings)
+        {
+            return _database.DeleteAsync(readings);
+        }
+
+        public Task<int> UpdateRaedingsAsync(Reading readings)
+        {
+            return _database.UpdateAsync(readings);
+        }
+
+        public Task<Reading> GetSingleReadingAsync(int ID)
+        {
+            return _database.Table<Reading>().Where(s => s.ID == ID).FirstAsync();
+        }
+
+        #endregion
+
+        #region Recipe
+        public Task<List<Recipe>> GetRecipeAsync()
+        {
+            return _database.Table<Recipe>().ToListAsync();
+        }
+
+        public Task<int> SaveRecipeAsync(Recipe recipe)
         {
             return _database.InsertAsync(recipe);
         }
 
-        public Task<int> DeleteMeadAsync(MeadTable mead)
+        public Task<int> UpdateRecipeAsync(Recipe recipe)
         {
-            return _database.DeleteAsync(mead);
+            return _database.UpdateAsync(recipe);
         }
-        
-        public Task<int> UpdateMeadAsync(MeadTable mead)
+
+        public Task<int> DeleteRecipeAsync(Recipe recipe)
         {
-            return _database.UpdateAsync(mead);
+            return _database.DeleteAsync(recipe);
         }
+
+        public Task<Recipe> GetSingleRecipe(int ID)
+        {
+            return _database.Table<Recipe>().Where(s => s.ID == ID).FirstAsync();
+        }
+
+
+        #endregion
+
+        #region Event
+
+        public Task<List<MeadEvents>> GetEventAsync(int ID)
+        {
+            return _database.Table<MeadEvents>().Where(s => s.MeadId == ID).ToListAsync();
+        }
+
+        public Task<int> SaveEventAsync(MeadEvents meadEvents)
+        {
+            return _database.InsertAsync(meadEvents);
+        }
+
+        public Task<int> DeleteEventAsync(MeadEvents meadEvents)
+        {
+            return _database.DeleteAsync(meadEvents);
+        }
+
+        public Task<int> UpdateEventAsync(MeadEvents meadEvents)
+        {
+            return _database.UpdateAsync(meadEvents);
+        }
+
+        public Task<MeadEvents> GetSingleEventAsync(int ID)
+        {
+            return _database.Table<MeadEvents>().Where(s => s.ID == ID).FirstAsync();
+        }
+
+        #endregion
+
+
+        #region Testing
+
+        public async Task<int> ClearMeadData()
+        {
+            return await _database.DeleteAllAsync<Mead>();
+        }
+
+        public async Task<int> ClearRecipeData()
+        {
+            return await _database.DeleteAllAsync<Recipe>();
+        }
+
+        public async Task<int> ClearReadingData()
+        {
+            return await _database.DeleteAllAsync<Reading>();
+        }
+
+        public async Task<int> ClearEventData()
+        {
+            return await _database.DeleteAllAsync<MeadEvents>();
+        }
+
+        #endregion
+
+
+
+
+
+
     }
+
 
 }

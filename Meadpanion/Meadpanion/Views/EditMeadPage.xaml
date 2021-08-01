@@ -25,7 +25,7 @@
                 <Editor Text="{Binding Note, Mode=TwoWay}" AutoSize="TextChanges" FontSize="Medium" Margin="0" />
                 <StackLayout Orientation="Horizontal">
                     <Button Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"></Button>
-                    <Button Text="Add" Command="{Binding SaveCommand}" HorizontalOptions="FillAndExpand"></Button>
+                    <Button Text="Edit" Command="{Binding SaveCommand}" HorizontalOptions="FillAndExpand"></Button>
                 </StackLayout>
             </StackLayout>
     </ContentPage.Content>

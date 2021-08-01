@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Meadpanion.Services;
+using System.Collections.Generic;
 
 namespace Meadpanion.ViewModels
 {
@@ -15,7 +16,7 @@ namespace Meadpanion.ViewModels
 
         private Mead _selectedItem;
 
-        public ObservableCollection<Mead> Meads { get; }
+        public ObservableCollection<Mead> Meads { get; set; }
         public Command LoadMeadsCommand { get; }
         public Command AddItemCommand { get; }
         public Command<Mead> ItemTapped { get; }
@@ -39,11 +40,11 @@ namespace Meadpanion.ViewModels
             try
             {
                 Meads.Clear();
-                var items = await MeadDataStore.GetItemsAsync(true);
-                foreach (var item in items)
-                {
+                //ID is not used for MeadDataStore
+                var meads = await MeadDataStore.GetItemsAsync(0);
+                foreach (var item in meads)
                     Meads.Add(item);
-                }
+
             }
             catch (Exception ex)
             {

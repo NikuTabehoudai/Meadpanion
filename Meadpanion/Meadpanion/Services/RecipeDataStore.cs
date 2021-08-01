@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Meadpanion.Models;
-using Meadpanion.SQL;
 using System.Linq;
 
 namespace Meadpanion.Services
@@ -24,12 +23,12 @@ namespace Meadpanion.Services
             recipes.Add(new Recipe() { Name = "Recipe 5", ID = 5 });
         }
 
-        public Task<bool> AddItemAsync(Recipe item)
+        public Task<int> AddItemAsync(Recipe item)
         {
             throw new NotImplementedException();
         }
 
-        public Task<int> DeleteItemAsync(Recipe item)
+        public Task<int> DeleteItemAsync(int ID)
         {
             throw new NotImplementedException();
         }
@@ -39,7 +38,7 @@ namespace Meadpanion.Services
             return await Task.FromResult(recipes.FirstOrDefault(s => s.ID == id));
         }
 
-        public async Task<IEnumerable<Recipe>> GetItemsAsync(bool forceRefresh = false)
+        public async Task<IEnumerable<Recipe>> GetItemsAsync(int notUsed)
         {
             return await Task.FromResult(recipes);
         }

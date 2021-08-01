@@ -15,7 +15,7 @@
       https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/data-binding/compiled-bindings
     -->
     <RefreshView x:DataType="local:MeadsViewModel" Command="{Binding LoadMeadsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
-        <CollectionView x:Name="ItemsListView"
+        <CollectionView x:Name="MeadsListView"
                 ItemsSource="{Binding Meads}"
                 SelectionMode="None">
             <CollectionView.ItemTemplate>
