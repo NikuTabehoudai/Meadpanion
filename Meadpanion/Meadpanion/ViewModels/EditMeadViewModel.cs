@@ -14,8 +14,10 @@ namespace Meadpanion.ViewModels
     {
         public IDataStore<Mead> MeadDataStore => DependencyService.Get<IDataStore<Mead>>();
         public IDataStore<Recipe> RecipeDataStore => DependencyService.Get<IDataStore<Recipe>>();
+        public IDataStore<Reading> ReadingDataStore => DependencyService.Get<IDataStore<Reading>>();
 
         public Mead Mead { get; set; }
+        public List<Reading> Readings { get; set; }
 
         private int meadID;
         private string name;
@@ -26,8 +28,11 @@ namespace Meadpanion.ViewModels
         private string note;
         private List<Recipe> recipeList = new List<Recipe>();
         private Recipe selectedRecipe;
-
-
+        private List<string> statusList;
+        private string selectedStatus;
+        private string customStatus;
+        private DateTime lastStatusChanged;
+        
         public EditMeadViewModel()
         {
             SaveCommand = new Command(OnSave, ValidateSave);
@@ -36,6 +41,17 @@ namespace Meadpanion.ViewModels
                 (_, __) => SaveCommand.ChangeCanExecute();
             LoadRecipe();
 
+            statusList = new List<string>()
+            {
+                "Primary",
+                "Secundary",
+                "Aging",
+                "Bottled",
+                "Finished",
+                "Discarded",
+                "Custom"
+            };
+
         }
 
 
@@ -43,7 +59,7 @@ namespace Meadpanion.ViewModels
         {
             try
             {
-                var items = await RecipeDataStore.GetItemsAsync(true);
+                var items = await RecipeDataStore.GetItemsAsync(0);
                 foreach (var item in items)
                 {
                     recipeList.Add(item);
@@ -59,7 +75,9 @@ namespace Meadpanion.ViewModels
         {
             try
             {
-                var mead = await MeadDataStore.GetItemAsync(meadID);
+                Mead = await MeadDataStore.GetItemAsync(meadID);
+                Readings = (List<Reading>)await ReadingDataStore.GetItemsAsync(MeadID);
+
                 SetProperies();
             }
             catch (Exception ex)
@@ -72,11 +90,12 @@ namespace Meadpanion.ViewModels
         {
             Name = Mead.Name;
             Date = Mead.Date;
-            StartingGravity = Mead.Readings[0].GravityReading;
+            StartingGravity = Readings[0].GravityReading;
             Amount = Mead.Amount;
             Note = Mead.Note;
             SelectedRecipe = recipeList.FirstOrDefault(s => s.ID == Mead.RecipeID);
-
+            SelectedStatus = Mead.Status;
+            lastStatusChanged = Mead.LastStatusChange;
         }
 
         #region Bindings
@@ -134,6 +153,34 @@ namespace Meadpanion.ViewModels
             set => SetProperty(ref selectedRecipe, value);
         }
 
+        public List<String> StatusList
+        {
+            get => statusList;
+            set => SetProperty(ref statusList, value);
+        }
+
+        public string SelectedStatus
+        {
+            get => selectedStatus;
+            set {
+                SetProperty(ref selectedStatus, value);
+                ShowCustomEntryLine();
+            }
+        }
+
+        public string CustomStatus
+        {
+            get => customStatus;
+            set => SetProperty(ref customStatus, value);
+        }
+
+        private bool showCustomEntry;
+        public bool ShowCustomEntry
+        {
+            get => showCustomEntry;
+            set => SetProperty(ref showCustomEntry, value);
+        }
+
         public int MeadID
         {
             get
@@ -149,6 +196,14 @@ namespace Meadpanion.ViewModels
 
         #endregion
 
+        private void ShowCustomEntryLine()
+        {
+            if (SelectedStatus == "Custom")
+            {
+                ShowCustomEntry = true;
+            }
+        }
+
         public Command SaveCommand { get; }
         public Command CancelCommand { get; }
 
@@ -160,7 +215,18 @@ namespace Meadpanion.ViewModels
 
         private async void OnSave()
         {
-            Mead.Readings[0].GravityReading = startingGravity;
+            var status = selectedStatus;
+
+            if (status == "Custom")
+            {
+                status = customStatus;
+            }
+
+            if (selectedStatus != Mead.Status)
+            {
+                lastStatusChanged = DateTime.Today;
+            }
+
             Mead newMead = new Mead()
             {
                 ID = meadID,
@@ -169,12 +235,16 @@ namespace Meadpanion.ViewModels
                 Date = date,
                 Amount = amount,
                 Note = note,
-                Active = true,
-                Readings = Mead.Readings,
-                Events = Mead.Events
+                Status = status,
+                LastStatusChange = lastStatusChanged
             };
-
             await MeadDataStore.UpdateItemAsync(newMead);
+
+            Readings[0].GravityReading = startingGravity;
+            Readings[0].Date = date;
+            //Readings[0].ABV = "0%";
+
+            await ReadingDataStore.UpdateItemAsync(Readings[0]);
 
             // This will pop the current page off the navigation stack
             await Shell.Current.GoToAsync("../..");

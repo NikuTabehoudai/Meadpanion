@@ -27,6 +27,21 @@
                     </VisualStateGroupList>
                 </Setter>
             </Style>
+            <Style x:Key="LabelStyleBasic"  TargetType="Label">
+                <Setter Property="TextColor" Value="Gray"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="Medium"/>
+            </Style>
+            <Style x:Key="LabelStyleTitle" TargetType="Label">
+                <Setter Property="TextColor" Value="Gray"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="Small"/>
+            </Style>
+            <Style x:Key="LabelStyleInput" TargetType="Label">
+                <Setter Property="TextColor" Value="Gray"/>
+                <Setter Property="HorizontalTextAlignment" Value="Start"/>
+                <Setter Property="FontSize" Value="Medium"/>
+            </Style>
         </ResourceDictionary>        
     </Application.Resources>
 </Application>

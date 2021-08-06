@@ -6,10 +6,10 @@ namespace Meadpanion.Services
 {
     public interface IDataStore<T>
     {
-        Task<bool> AddItemAsync(T item);
+        Task<int> AddItemAsync(T item);
         Task<int> UpdateItemAsync(T item);
-        Task<int> DeleteItemAsync(T item);
+        Task<int> DeleteItemAsync(int id);
         Task<T> GetItemAsync(int id);
-        Task<IEnumerable<T>> GetItemsAsync(bool forceRefresh = false);
+        Task<IEnumerable<T>> GetItemsAsync(int id);
     }
 }

@@ -8,26 +8,31 @@
              xmlns:viewmodels="clr-namespace:Meadpanion.ViewModels" 
              x:DataType="viewmodels:EditMeadViewModel"
              ios:Page.UseSafeArea="true">
-    
+
     <ContentPage.Content>
+        <ScrollView VerticalScrollBarVisibility="Default">
             <StackLayout Spacing="3" Padding="15">
-                <Label Text="Name" FontSize="Medium" />
+                <Label Style="{DynamicResource LabelStyleInput}" Text="Name" FontSize="Medium" />
                 <Entry Text="{Binding Name, Mode=TwoWay}" FontSize="Medium" />
-                <Label Text="Recipe" FontSize="Medium" />
+                <Label Style="{DynamicResource LabelStyleInput}" Text="Recipe" />
             <Picker ItemsSource="{Binding RecipeList, Mode=TwoWay}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedRecipe, Mode=TwoWay}"/>
-            <Label Text="Date" FontSize="Medium" />
+            <Label Style="{DynamicResource LabelStyleInput}" Text="Date" />
                 <DatePicker Date="{Binding Date, Mode=TwoWay}" />   
-                <Label Text="Starting Gravity" FontSize="Medium" />
+                <Label Style="{DynamicResource LabelStyleInput}" Text="Starting Gravity" />
                 <Entry Text="{Binding StartingGravity, Mode=TwoWay}" MaxLength="5" Keyboard="Numeric" FontSize="Medium" Margin="0" />
-                <Label Text="Amount(L)" FontSize="Medium" />
+                <Label Style="{DynamicResource LabelStyleInput}" Text="Amount(L)" />
                 <Entry Text="{Binding Amount, Mode=TwoWay}" Keyboard="Numeric" FontSize="Medium" Margin="0" />
-                <Label Text="Note" FontSize="Medium" />
+            <Label Style="{DynamicResource LabelStyleInput}" Text="Status"/>
+            <Picker ItemsSource="{Binding StatusList, Mode=TwoWay}" SelectedItem="{Binding SelectedStatus, Mode=TwoWay}"/>
+            <Entry Text="{Binding CustomStatus, Mode=TwoWay}" FontSize="Medium" IsVisible="{Binding ShowCustomEntry}"/>
+            <Label Style="{DynamicResource LabelStyle}" Text="Note" />
                 <Editor Text="{Binding Note, Mode=TwoWay}" AutoSize="TextChanges" FontSize="Medium" Margin="0" />
                 <StackLayout Orientation="Horizontal">
                     <Button Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"></Button>
-                    <Button Text="Add" Command="{Binding SaveCommand}" HorizontalOptions="FillAndExpand"></Button>
+                    <Button Text="Edit" Command="{Binding SaveCommand}" HorizontalOptions="FillAndExpand"></Button>
                 </StackLayout>
             </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 
 </ContentPage>

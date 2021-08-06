@@ -8,20 +8,21 @@
              xmlns:viewmodels="clr-namespace:Meadpanion.ViewModels" 
              x:DataType="viewmodels:NewMeadViewModel"
              ios:Page.UseSafeArea="true">
-    
+
+
     <ContentPage.Content>
             <StackLayout Spacing="3" Padding="15">
-                <Label Text="Name" FontSize="Medium" />
+                <Label Style="{DynamicResource LabelStyleInput}" Text="Name" />
                 <Entry Text="{Binding Name, Mode=TwoWay}" FontSize="Medium" />
-                <Label Text="Recipe" FontSize="Medium" />
+                <Label Style="{DynamicResource LabelStyleInput}" Text="Recipe" />
             <Picker ItemsSource="{Binding RecipeList, Mode=TwoWay}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedRecipe, Mode=TwoWay}"/>
-            <Label Text="Date" FontSize="Medium" />
+            <Label Style="{DynamicResource LabelStyleInput}" Text="Date" />
                 <DatePicker Date="{Binding Date, Mode=TwoWay}" />   
-                <Label Text="Starting Gravity" FontSize="Medium" />
+                <Label Style="{DynamicResource LabelStyleInput}" Text="Starting Gravity" />
                 <Entry Text="{Binding StartingGravity, Mode=TwoWay}" MaxLength="5" Keyboard="Numeric" FontSize="Medium" Margin="0" />
-                <Label Text="Amount(L)" FontSize="Medium" />
+                <Label Style="{DynamicResource LabelStyleInput}" Text="Amount(L)" />
                 <Entry Text="{Binding Amount, Mode=TwoWay}" Keyboard="Numeric" FontSize="Medium" Margin="0" />
-                <Label Text="Note" FontSize="Medium" />
+                <Label Style="{DynamicResource LabelStyleInput}" Text="Note" />
                 <Editor Text="{Binding Note, Mode=TwoWay}" AutoSize="TextChanges" FontSize="Medium" Margin="0" />
                 <StackLayout Orientation="Horizontal">
                     <Button Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"></Button>
