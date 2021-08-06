@@ -16,5 +16,6 @@ namespace Meadpanion.Models
         public string Note { get; set; }
         public string ABV { get; set; }
         public bool OriginalGravity { get; set; }
+        public bool StepFeeding { get; set; }
     }
 }

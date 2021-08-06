@@ -17,8 +17,7 @@ namespace Meadpanion.Services
 
         public async Task<int> DeleteItemAsync(int ID)
         {
-            var item = await App.Database.GetSingleReadingAsync(ID);
-            return await App.Database.DeleteReadingAsync(item);
+            return await App.Database.DeleteReadingAsync(await GetItemAsync(ID));
         }
 
         public async Task<Reading> GetItemAsync(int id)

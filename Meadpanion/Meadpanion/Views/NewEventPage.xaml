@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Meadpanion.Views.NewEventPage"
+             Shell.PresentationMode="ModalAnimated"
+             Title="{Binding Title}"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             xmlns:viewmodels="clr-namespace:Meadpanion.ViewModels" 
+             x:DataType="viewmodels:NewEventViewModel"
+             ios:Page.UseSafeArea="true">
+
+    <ContentPage.Content>
+        <StackLayout Spacing="3" Padding="15">
+            <Label Style="{DynamicResource LabelStyleInput}" Text="Date" FontSize="Medium" />
+            <DatePicker Date="{Binding Date, Mode=TwoWay}" />
+            <Label Style="{DynamicResource LabelStyleInput}" Text="Event" FontSize="Medium" />
+            <Picker ItemsSource="{Binding EventTypeList, Mode=TwoWay}" SelectedItem="{Binding SelectedEventType, Mode=TwoWay}"/>
+            <Grid IsVisible="{Binding ShowStepFeedingGrid, Mode=TwoWay}">
+                <StackLayout>
+                    <Label Style="{DynamicResource LabelStyleInput}" Text="Gravity before feeding"/>
+                    <Entry Text="{Binding OldGravity, Mode=TwoWay}" MaxLength="5" Keyboard="Numeric" Margin="0"/>
+                    <Label Style="{DynamicResource LabelStyleInput}" Text="Gravity after feeding"/>
+                    <Entry Text="{Binding NewGravity, Mode=TwoWay}" MaxLength="5" Keyboard="Numeric" Margin="0"/>
+                </StackLayout>
+            </Grid>
+            <Grid IsVisible="{Binding ShowBottelingGrid, Mode=TwoWay}">
+                <StackLayout>
+                    <Label Style="{DynamicResource LabelStyleInput}" Text="Amount Of bottles"/>
+                    <Entry Text="{Binding Bottles, Mode=TwoWay}" MaxLength="5" Keyboard="Numeric" FontSize="Medium" Margin="0"/>
+                </StackLayout>
+            </Grid>
+            <Label Style="{DynamicResource LabelStyleInput}" Text="Note:"/>
+            <Entry Text="{Binding Note, Mode=TwoWay}" FontSize="Medium" Margin="0" />
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"></Button>
+                <Button Text="Add" Command="{Binding SaveCommand}" HorizontalOptions="FillAndExpand"></Button>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+
+</ContentPage>

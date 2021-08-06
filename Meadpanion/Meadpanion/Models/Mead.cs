@@ -12,8 +12,10 @@ namespace Meadpanion.Models
         public string Name { get; set; }
         public DateTime Date { get; set; }
         public int RecipeID { get; set; }
-        public bool Active { get; set; }
+        public string Status { get; set; }
+        public DateTime LastStatusChange { get; set; }
         public float Amount { get; set; }
         public string Note { get; set; }
+        public bool StepFed { get; set; }
     }
 }

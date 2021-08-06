@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Meadpanion.ViewModels"
+             x:Class="Meadpanion.Views.EventDetailPage"
+             Title="{Binding Title}">
+    
+
+
+
+<ContentPage.ToolbarItems>
+        <ToolbarItem Order="Secondary" Priority="1" Name="Delete Reading" Command="{Binding DeleteEventCommand}"/>
+        <ToolbarItem Order="Primary" Priority="1" Name="Edit" Command="{Binding EditEventCommand}"/>
+    </ContentPage.ToolbarItems>
+
+
+    <ContentPage.Content>
+        <StackLayout Spacing="3" Padding="15" HorizontalOptions="Center" VerticalOptions="Center">
+            <Label Style="{DynamicResource LabelStyleTitle}" Text="Date"/>
+            <Label Style="{DynamicResource LabelStyleBasic}" Text="{Binding Date, Mode=TwoWay}"/>
+            <Label Style="{DynamicResource LabelStyleTitle}" Text="Event"/>
+            <Label Style="{DynamicResource LabelStyleBasic}" Text="{Binding EventType, Mode=TwoWay}"/>
+            <Grid IsVisible="{Binding ShowStepFeedingGrid, Mode=TwoWay}">
+                <StackLayout>
+                    <Label Style="{DynamicResource LabelStyleTitle}" Text="Gravity before feeding"/>
+                    <Label Style="{DynamicResource LabelStyleBasic}" Text="{Binding OldGravity, Mode=TwoWay}"/>
+                    <Label Style="{DynamicResource LabelStyleTitle}" Text="Gravity after feeding"/>
+                    <Label Style="{DynamicResource LabelStyleBasic}" Text="{Binding NewGravity, Mode=TwoWay}"/>
+                </StackLayout>
+            </Grid>
+            <Grid IsVisible="{Binding ShowBottelingGrid, Mode=TwoWay}">
+                <StackLayout>
+                    <Label Style="{DynamicResource LabelStyleTitle}" Text="Amount Of bottles"/>
+                    <Label Style="{DynamicResource LabelStyleBasic}" Text="{Binding Bottles, Mode=TwoWay}"/>
+                </StackLayout>
+            </Grid>
+            <Label Style="{DynamicResource LabelStyleTitle}" Text="Note:"/>
+            <Label Style="{DynamicResource LabelStyleBasic}" Text="{Binding Note, Mode=TwoWay}"/>
+        </StackLayout>
+    </ContentPage.Content>
+
+</ContentPage>

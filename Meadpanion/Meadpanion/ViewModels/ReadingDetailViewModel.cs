@@ -1,12 +1,9 @@
 ﻿using Meadpanion.Models;
 using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Meadpanion.Services;
-using Meadpanion.Util;
 using Meadpanion.Views;
-using System.Collections.Generic;
 
 namespace Meadpanion.ViewModels
 {

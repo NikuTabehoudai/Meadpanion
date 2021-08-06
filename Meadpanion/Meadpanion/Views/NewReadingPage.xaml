@@ -11,11 +11,11 @@
 
     <ContentPage.Content>
         <StackLayout Spacing="3" Padding="15">
-            <Label Text="Date" FontSize="Medium" />
+            <Label Style="{DynamicResource LabelStyleInput}" Text="Date" FontSize="Medium" />
             <DatePicker Date="{Binding Date, Mode=TwoWay}" />
-            <Label Text="Gravity" FontSize="Medium" />
+            <Label Style="{DynamicResource LabelStyleInput}" Text="Gravity" FontSize="Medium" />
             <Entry Text="{Binding Gravity, Mode=TwoWay}" MaxLength="5" Keyboard="Numeric" FontSize="Medium" Margin="0"/>
-            <Label Text="Note:" FontSize="Medium" />
+            <Label Style="{DynamicResource LabelStyleInput}" Text="Note:" FontSize="Medium" />
             <Entry Text="{Binding Note, Mode=TwoWay}" FontSize="Medium" Margin="0" />
             <StackLayout Orientation="Horizontal">
                 <Button Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"></Button>

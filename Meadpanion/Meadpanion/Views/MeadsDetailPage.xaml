@@ -6,49 +6,49 @@
              Title="{Binding Title}">
 
     <ContentPage.ToolbarItems>
-        <!-- <ToolbarItem Order="Secondary" Priority="1" Name="Events" /> -->
-        <ToolbarItem Order="Secondary" Priority="2" Name="Delete Mead" Command="{Binding DeleteMeadCommand}"/>
+        <ToolbarItem Order="Secondary" Priority="1" Name="Events" Command="{Binding EventsCommand}" />
         <ToolbarItem Order="Secondary" Priority="1" Name="Readings" Command="{Binding ReadingsCommand}"/>
         <ToolbarItem Order="Primary" Priority="1" Name="Edit" Command="{Binding EditMeadCommand}"/>
+        <ToolbarItem Order="Secondary" Priority="1" Name="Delete Mead" Command="{Binding DeleteMeadCommand}"/>
     </ContentPage.ToolbarItems>
-        <StackLayout>
+        <StackLayout Padding="10">
             <StackLayout HorizontalOptions="Center" Orientation="Vertical">
-                <Label Text="Recipe:" FontSize="Small" HorizontalTextAlignment="Center"/>
-                <Label Text="{Binding RecipeName, Mode=TwoWay}" FontSize="Medium" HorizontalTextAlignment="Center"/>
+            <Label Style="{DynamicResource LabelStyleTitle}" Text="Recipe:"/>
+            <Label Style="{DynamicResource LabelStyleBasic}" Text="{Binding RecipeName, Mode=TwoWay}" />
             </StackLayout>
             <StackLayout HorizontalOptions="Center" Orientation="Vertical">
-                <Label Text="Start Date:" FontSize="Small" HorizontalTextAlignment="Center"/>
-                <Label Text="{Binding Date, Mode=TwoWay}" FontSize="Medium" HorizontalTextAlignment="Center"/>
+            <Label Style="{DynamicResource LabelStyleTitle}" Text="Start Date:" />
+            <Label Style="{DynamicResource LabelStyleBasic}" Text="{Binding Date, Mode=TwoWay}" />
             </StackLayout>
             <Grid>
                 <StackLayout Grid.Row="0" HorizontalOptions="Center" Orientation="Horizontal" Spacing="50">
-                    <Label Text="Starting Gravity:" FontSize="Medium" HorizontalTextAlignment="Start"/>
-                    <Label Text="Potential ABV:" FontSize="Medium" HorizontalTextAlignment="End" />
+                <Label Style="{DynamicResource LabelStyleBasic}" Text="Starting Gravity:" HorizontalTextAlignment="Start"/>
+                <Label Style="{DynamicResource LabelStyleBasic}" Text="Potential ABV:" HorizontalTextAlignment="End" />
                 </StackLayout>
                 <StackLayout Grid.Row="1" HorizontalOptions="Center" Orientation="Horizontal" Spacing="150">
-                    <Label Text="{Binding StartingGravity, Mode=TwoWay}" FontSize="Medium" HorizontalTextAlignment="Start"/>
-                    <Label Text="{Binding PotentialABV, Mode=TwoWay}" FontSize="Medium" HorizontalTextAlignment="End"/>
+                <Label Style="{DynamicResource LabelStyleBasic}" Text="{Binding StartingGravity, Mode=TwoWay}" HorizontalTextAlignment="Start"/>
+                <Label Style="{DynamicResource LabelStyleBasic}" Text="{Binding PotentialABV, Mode=TwoWay}"  HorizontalTextAlignment="End"/>
                 </StackLayout>
                 <StackLayout Grid.Row="2" HorizontalOptions="Center" Orientation="Horizontal" Spacing="55">
-                    <Label Text="Current Gravity:" FontSize="Medium" HorizontalTextAlignment="Start"/>
-                    <Label Text="Current ABV:" FontSize="Medium" HorizontalTextAlignment="End" />
+                <Label Style="{DynamicResource LabelStyleBasic}" Text="Current Gravity:" HorizontalTextAlignment="Start"/>
+                <Label Style="{DynamicResource LabelStyleBasic}" Text="Current ABV:" HorizontalTextAlignment="End" />
                 </StackLayout>
                 <StackLayout Grid.Row="3" HorizontalOptions="Center" Orientation="Horizontal" Spacing="150">
-                    <Label Text="{Binding CurrentGravity, Mode=TwoWay}" FontSize="Medium" HorizontalTextAlignment="Start"/>
-                    <Label Text="{Binding CurrentABV, Mode=TwoWay}" FontSize="Medium" HorizontalTextAlignment="End"/>
+                <Label Style="{DynamicResource LabelStyleBasic}" Text="{Binding CurrentGravity, Mode=TwoWay}" HorizontalTextAlignment="Start"/>
+                <Label Style="{DynamicResource LabelStyleBasic}" Text="{Binding CurrentABV, Mode=TwoWay}" HorizontalTextAlignment="End"/>
                 </StackLayout>
             </Grid>
             <StackLayout HorizontalOptions="Center" Orientation="Vertical">
-                <Label Text="Amount" FontSize="Small" HorizontalTextAlignment="Center"/>
-                <Label Text="{Binding Amount, Mode=TwoWay}" FontSize="Medium" HorizontalTextAlignment="Center"/>
+            <Label Style="{DynamicResource LabelStyleTitle}" Text="Amount" FontSize="Small" />
+            <Label Style="{DynamicResource LabelStyleBasic}" Text="{Binding Amount, Mode=TwoWay}" />
             </StackLayout>
             <StackLayout HorizontalOptions="Center" Orientation="Vertical">
-                <Label Text="Status" FontSize="Small" HorizontalTextAlignment="Center"/>
-                <Label Text="{Binding Status, Mode=TwoWay}" FontSize="Medium" HorizontalTextAlignment="Center"/>
+            <Label Style="{DynamicResource LabelStyleTitle}" Text="Status" FontSize="Small" />
+            <Label Style="{DynamicResource LabelStyleBasic}" Text="{Binding Status, Mode=TwoWay}" />
             </StackLayout>
             <StackLayout HorizontalOptions="Center" Orientation="Vertical">
-                <Label Text="Note" FontSize="Small" HorizontalTextAlignment="Center"/>
-                <Label Text="{Binding Note, Mode=TwoWay}" FontSize="Medium" HorizontalTextAlignment="Center"/>
+            <Label Style="{DynamicResource LabelStyleTitle}" Text="Note" FontSize="Small" />
+            <Label Style="{DynamicResource LabelStyleBasic}" Text="{Binding Note, Mode=TwoWay}" />
             </StackLayout>
 
         </StackLayout>

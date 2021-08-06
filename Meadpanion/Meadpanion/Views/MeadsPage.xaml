@@ -7,6 +7,17 @@
              xmlns:model="clr-namespace:Meadpanion.Models"  
              x:Name="BrowseMeadsPage">
 
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="LabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="Gray"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="Medium"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Command="{Binding AddItemCommand}" />
     </ContentPage.ToolbarItems>
@@ -14,27 +25,62 @@
       x:DataType enables compiled bindings for better performance and compile time validation of binding expressions.
       https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/data-binding/compiled-bindings
     -->
-    <RefreshView x:DataType="local:MeadsViewModel" Command="{Binding LoadMeadsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
-        <CollectionView x:Name="MeadsListView"
+
+    <StackLayout Padding="10">
+        <Grid ColumnSpacing="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="33*"/>
+                <ColumnDefinition Width="33*"/>
+            </Grid.ColumnDefinitions>
+                <StackLayout Padding="5,5,5,20" Grid.Column="0">
+                    <Label Text="Name"  Style="{DynamicResource LabelStyleBasic}"/>
+                </StackLayout>
+                <StackLayout Padding="5,5,5,20" Grid.Column="1">
+                    <Label Text="Status" Style="{DynamicResource LabelStyleBasic}"/>
+                </StackLayout>
+        </Grid>
+
+
+        <RefreshView x:DataType="local:MeadsViewModel" Command="{Binding LoadMeadsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+            <CollectionView x:Name="MeadsListView"
                 ItemsSource="{Binding Meads}"
                 SelectionMode="None">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout Padding="10" x:DataType="model:Mead">
-                        <Label Text="{Binding Name}" 
-                            LineBreakMode="NoWrap" 
-                            Style="{DynamicResource ListItemTextStyle}" 
-                            FontSize="16" />
-                        <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer 
-                                NumberOfTapsRequired="1"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:MeadsViewModel}}, Path=ItemTapped}"		
-                                CommandParameter="{Binding .}">
-                            </TapGestureRecognizer>
-                        </StackLayout.GestureRecognizers>
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </RefreshView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout  x:DataType="model:Mead">
+                            <Frame Padding="2">
+                                <Grid ColumnSpacing="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="33*"/>
+                                        <ColumnDefinition Width="33*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackLayout Padding="4,3,4,3" Grid.Column="0">
+                                        <Label Text="{Binding Name}" 
+                                            LineBreakMode="NoWrap" 
+                                            Style="{DynamicResource LabelStyleBasic}" 
+                                            FontSize="16"
+                                            />
+                                    </StackLayout>
+                                    <StackLayout Padding="4,3,4,3" Grid.Column="1">
+                                        <Label Text="{Binding Status}"
+                                            LineBreakMode="NoWrap" 
+                                            Style="{DynamicResource LabelStyleBasic}" 
+                                            FontSize="16"
+                                            />  
+                                    </StackLayout>
+                                 </Grid>
+                              </Frame>
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        NumberOfTapsRequired="1"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:MeadsViewModel}}, Path=ItemTapped}"		
+                                        CommandParameter="{Binding .}">
+                                    </TapGestureRecognizer>
+                                </StackLayout.GestureRecognizers>
+                            </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </StackLayout>
 </ContentPage>

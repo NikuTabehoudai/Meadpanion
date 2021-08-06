@@ -7,6 +7,7 @@ using Meadpanion.Services;
 using Meadpanion.Util;
 using Meadpanion.Views;
 using System.Collections.Generic;
+using Meadpanion.Events;
 
 namespace Meadpanion.ViewModels
 {
@@ -16,6 +17,7 @@ namespace Meadpanion.ViewModels
         public IDataStore<Mead> MeadDataStore => DependencyService.Get<IDataStore<Mead>>();
         public IDataStore<Recipe> RecipeDataStore => DependencyService.Get<IDataStore<Recipe>>();
         public IDataStore<Reading> ReadingDataStore => DependencyService.Get<IDataStore<Reading>>();
+        public IDataStore<MeadEvents> MeadEventsDataStore => DependencyService.Get<IDataStore<MeadEvents>>();
 
 
         private int meadID;
@@ -28,17 +30,20 @@ namespace Meadpanion.ViewModels
         private string amount;
         private string status;
         private string note;
+        private bool stepFed;
         public int Id { get; set; }
 
         public Command EditMeadCommand { get; }
         public Command ReadingsCommand { get; }
         public Command DeleteMeadCommand { get; set; }
+        public Command EventsCommand { get; set; }
 
         public MeadsDetailViewModel()
         {
             EditMeadCommand = new Command(OnEditMead);
             ReadingsCommand = new Command(OnReadings);
             DeleteMeadCommand = new Command(OnDeleteMead);
+            EventsCommand = new Command(OnEvents);
         }
 
         #region Bindings
@@ -54,7 +59,7 @@ namespace Meadpanion.ViewModels
             get => recipeName;
             set => SetProperty(ref recipeName, value);
         }
-        
+
         public string StartingGravity
         {
             get => startingGravity;
@@ -119,26 +124,32 @@ namespace Meadpanion.ViewModels
             {
                 var mead = await MeadDataStore.GetItemAsync(itemId);
                 var recipe = await RecipeDataStore.GetItemAsync(mead.RecipeID);
-                var readings = await ReadingDataStore.GetItemsAsync(itemId);
                 List<Reading> readingsList = new List<Reading>();
-                foreach (var item in readings)
+                foreach (var item in await ReadingDataStore.GetItemsAsync(itemId))
                     readingsList.Add(item);
 
                 meadID = mead.ID;
+                stepFed = mead.StepFed;
                 Title = mead.Name;
                 Date = mead.Date.ToString("dd.MM.yyyy");
                 RecipeName = recipe.Name;
                 StartingGravity = readingsList[0].GravityReading.ToString("0.000");
-                PotentialABV = Util.ABVCalculator.CalculateABV(readingsList[0].GravityReading, 1.000f);
-                CurrentGravity = readingsList[readingsList.Count -1 ].GravityReading.ToString("0.000");
-                CurrentABV = Util.ABVCalculator.CalculateABV(readingsList[0].GravityReading, readingsList[readingsList.Count - 1].GravityReading);
-                Amount = mead.Amount +"L";
-                if (mead.Active) Status = "Active";
-                else Status = "Inactive";
+                PotentialABV = Util.ABVCalculator.StringCalculateABV(readingsList[0].GravityReading, 1.000f);
+                CurrentGravity = readingsList[readingsList.Count - 1].GravityReading.ToString("0.000");
+                if (mead.StepFed)
+                {
+                    var stepFeeding = new StepFeeding();
+                    await stepFeeding.Initialize(meadID);
+                    CurrentABV = stepFeeding.ReadingList[stepFeeding.ReadingList.Count - 1].ABV;
+                }
+                else
+                CurrentABV = Util.ABVCalculator.StringCalculateABV(readingsList[0].GravityReading, readingsList[readingsList.Count - 1].GravityReading);
+                Amount = mead.Amount + "L";
+                Status = mead.Status;
                 Note = mead.Note;
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 Debug.WriteLine("Failed to Load Item");
             }
@@ -153,7 +164,7 @@ namespace Meadpanion.ViewModels
         async void OnReadings(object obj)
         {
             // This will push the MeadDetailPage onto the navigation stack
-            await Shell.Current.GoToAsync($"{nameof(ReadingsPage)}?{nameof(ReadingsViewModel.MeadID)}={meadID}");
+            await Shell.Current.GoToAsync($"{nameof(ReadingsPage)}?{nameof(ReadingsViewModel.MeadID)}={meadID}&{nameof(ReadingsViewModel.StepFed)}={stepFed}");
         }
 
         async void OnDeleteMead()
@@ -163,13 +174,21 @@ namespace Meadpanion.ViewModels
             {
                 var readings = await ReadingDataStore.GetItemsAsync(meadID);
                 foreach (var item in readings)
-                {
                     await ReadingDataStore.DeleteItemAsync(item.ID);
-                } 
-                //TODO: Add Delete events.
+                
+                var meadEvents = await MeadEventsDataStore.GetItemsAsync(meadID);
+                foreach (var item in meadEvents)
+                    await MeadEventsDataStore.DeleteItemAsync(item.ID);
+                
                 await MeadDataStore.DeleteItemAsync(meadID);
                 await Shell.Current.GoToAsync("..");
             }
+        }
+
+
+    async void OnEvents()
+        {
+            await Shell.Current.GoToAsync($"{nameof(EventsPage)}?{nameof(EventsViewModel.MeadID)}={meadID}");
         }
     }
 }

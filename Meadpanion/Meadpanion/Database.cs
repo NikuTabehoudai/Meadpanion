@@ -107,11 +107,11 @@ namespace Meadpanion
 
         #endregion
 
-        #region Event
+        #region Events
 
-        public Task<List<MeadEvents>> GetEventAsync(int ID)
+        public Task<List<MeadEvents>> GetEventsAsync(int ID)
         {
-            return _database.Table<MeadEvents>().Where(s => s.MeadId == ID).ToListAsync();
+            return _database.Table<MeadEvents>().Where(s => s.MeadId == ID).OrderBy<DateTime>(s => s.Date).ToListAsync();
         }
 
         public Task<int> SaveEventAsync(MeadEvents meadEvents)

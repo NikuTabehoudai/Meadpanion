@@ -25,17 +25,17 @@
         </Grid.ColumnDefinitions>
             <Frame BorderColor="Black" Grid.Column="0" BackgroundColor="Aquamarine" Padding="0,0,0,0" Margin="0,0,0,0">
                 <StackLayout Padding="5,5,5,20">
-                    <Label Text="Date"  HorizontalTextAlignment="Center" FontSize="Medium" />
+                    <Label Text="Date"  Style="{DynamicResource LabelStyleBasic}" TextColor="Black"/>
                 </StackLayout>
             </Frame>
             <Frame BorderColor="Black" Grid.Column="1" BackgroundColor="Aquamarine" Padding="0,0,0,0" Margin="0,0,0,0">
                 <StackLayout Padding="5,5,5,20">
-                    <Label Text="Gravity" HorizontalTextAlignment="Center" FontSize="Medium" />
+                    <Label Text="Gravity" Style="{DynamicResource LabelStyleBasic}" TextColor="Black" />
                 </StackLayout>
             </Frame>
             <Frame BorderColor="Black" Grid.Column="2" BackgroundColor="Aquamarine" Padding="0,0,0,0" Margin="0,0,0,0">
                 <StackLayout Padding="5,5,5,20">
-                    <Label Text="ABV" HorizontalTextAlignment="Center" FontSize="Medium" />
+                    <Label Text="ABV" Style="{DynamicResource LabelStyleBasic}" TextColor="Black"/>
                 </StackLayout>
             </Frame>
         </Grid>
@@ -61,26 +61,27 @@
 
                                     <Label Text="{Binding Date, StringFormat='{0:dd-MM-yyyy}'}" 
                             LineBreakMode="NoWrap" 
-                            Style="{DynamicResource ListItemTextStyle}" 
+                            Style="{DynamicResource LabelStyleBasic}" 
                             FontSize="16"
-                            HorizontalTextAlignment="Center"
+                                           TextColor="Black"
                                            />
                                 </Frame>
                                 <Frame BorderColor="Black" Grid.Column="1" BackgroundColor="Aquamarine" Padding="0" Margin="-3">
                                     <Label Text="{Binding GravityReading, StringFormat='{0:0.000}'}" 
                             LineBreakMode="NoWrap" 
-                            Style="{DynamicResource ListItemTextStyle}"
+                            Style="{DynamicResource LabelStyleBasic}"
                             FontSize="16" 
-                            HorizontalTextAlignment="Center"
+                                           TextColor="Black"
                             />
                                 </Frame>
 
                                 <Frame BorderColor="Black" Grid.Column="2" BackgroundColor="Aquamarine" Padding="0" Margin="-3">
                                     <Label Text="{Binding ABV}" 
                             LineBreakMode="NoWrap" 
-                            Style="{DynamicResource ListItemTextStyle}"
+                            Style="{DynamicResource LabelStyleBasic}"
                             FontSize="16" 
-                            HorizontalTextAlignment="Center"
+                                           TextColor="Black"
+                                           
                             />
                                 </Frame>
 

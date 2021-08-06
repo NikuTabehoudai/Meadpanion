@@ -29,13 +29,13 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <StackLayout BackgroundColor="{StaticResource Accent}" VerticalOptions="FillAndExpand" HorizontalOptions="Fill" Padding="20">
-                    <Label Text="Mead Companion" TextColor="White" FontSize="Title" HorizontalTextAlignment="Center"/>
-                    <Label Text="For all your Mead tracking needs!" FontSize="Subtitle" HorizontalOptions="Center"/>
+                    <Label  Text="Mead Companion" TextColor="White" FontSize="Title" HorizontalTextAlignment="Center"/>
+            <Label Text="For all your Mead tracking needs!" TextColor="White" FontSize="Subtitle" HorizontalOptions="Center"/>
         </StackLayout>
         <ScrollView Grid.Row="1">
             <StackLayout Orientation="Vertical" Padding="30,24,30,24" Spacing="10" >
-                <Label Text="Meadmakers Companion app" FontSize="Title" TextColor="Black"/>
-                <Label Text="The one stop app for all you mead tracking needs." FontSize="16" Padding="0,0,0,0" TextColor="Black"/>
+                <Label Text="Meadmakers Companion app" FontSize="Title" TextColor="Gray"/>
+                <Label Text="The one stop app for all you mead tracking needs." FontSize="16" Padding="0,0,0,0" TextColor="Gray"/>
             </StackLayout>
         </ScrollView>
     </Grid>

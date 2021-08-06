@@ -22,6 +22,7 @@ namespace Meadpanion.ViewModels
         private string note;
         private string abv;
         private bool originalGravity;
+        private bool stepFeeding;
         private Reading reading;
 
 
@@ -84,6 +85,7 @@ namespace Meadpanion.ViewModels
             meadID = reading.MeadId;
             abv = reading.ABV;
             originalGravity = reading.OriginalGravity;
+            stepFeeding = reading.StepFeeding;
             
         }
 
@@ -106,7 +108,9 @@ namespace Meadpanion.ViewModels
                 GravityReading = gravity,
                 MeadId = meadID,
                 ABV = abv,
-                OriginalGravity = originalGravity
+                OriginalGravity = originalGravity,
+                StepFeeding = stepFeeding
+                
             };
 
             await ReadingDataStore.UpdateItemAsync(newReading);

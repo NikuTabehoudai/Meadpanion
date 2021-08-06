@@ -7,6 +7,7 @@
              xmlns:model="clr-namespace:Meadpanion.Models"  
              x:Name="BrowseRecipePage">
 
+
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Command="{Binding AddItemCommand}" />
     </ContentPage.ToolbarItems>
@@ -23,11 +24,11 @@
                     <StackLayout Padding="10" x:DataType="model:Item">
                         <Label Text="{Binding Text}" 
                             LineBreakMode="NoWrap" 
-                            Style="{DynamicResource ListItemTextStyle}" 
+                            Style="{DynamicResource LabelStyleBasic}" 
                             FontSize="16" />
                         <Label Text="{Binding Description}" 
                             LineBreakMode="NoWrap"
-                            Style="{DynamicResource ListItemDetailTextStyle}"
+                            Style="{DynamicResource LabelStyleBasic}"
                             FontSize="13" />
                         <StackLayout.GestureRecognizers>
                             <TapGestureRecognizer 

@@ -28,8 +28,11 @@ namespace Meadpanion.ViewModels
         private string note;
         private List<Recipe> recipeList = new List<Recipe>();
         private Recipe selectedRecipe;
-
-
+        private List<string> statusList;
+        private string selectedStatus;
+        private string customStatus;
+        private DateTime lastStatusChanged;
+        
         public EditMeadViewModel()
         {
             SaveCommand = new Command(OnSave, ValidateSave);
@@ -37,6 +40,17 @@ namespace Meadpanion.ViewModels
             this.PropertyChanged +=
                 (_, __) => SaveCommand.ChangeCanExecute();
             LoadRecipe();
+
+            statusList = new List<string>()
+            {
+                "Primary",
+                "Secundary",
+                "Aging",
+                "Bottled",
+                "Finished",
+                "Discarded",
+                "Custom"
+            };
 
         }
 
@@ -80,7 +94,8 @@ namespace Meadpanion.ViewModels
             Amount = Mead.Amount;
             Note = Mead.Note;
             SelectedRecipe = recipeList.FirstOrDefault(s => s.ID == Mead.RecipeID);
-
+            SelectedStatus = Mead.Status;
+            lastStatusChanged = Mead.LastStatusChange;
         }
 
         #region Bindings
@@ -138,6 +153,34 @@ namespace Meadpanion.ViewModels
             set => SetProperty(ref selectedRecipe, value);
         }
 
+        public List<String> StatusList
+        {
+            get => statusList;
+            set => SetProperty(ref statusList, value);
+        }
+
+        public string SelectedStatus
+        {
+            get => selectedStatus;
+            set {
+                SetProperty(ref selectedStatus, value);
+                ShowCustomEntryLine();
+            }
+        }
+
+        public string CustomStatus
+        {
+            get => customStatus;
+            set => SetProperty(ref customStatus, value);
+        }
+
+        private bool showCustomEntry;
+        public bool ShowCustomEntry
+        {
+            get => showCustomEntry;
+            set => SetProperty(ref showCustomEntry, value);
+        }
+
         public int MeadID
         {
             get
@@ -153,6 +196,14 @@ namespace Meadpanion.ViewModels
 
         #endregion
 
+        private void ShowCustomEntryLine()
+        {
+            if (SelectedStatus == "Custom")
+            {
+                ShowCustomEntry = true;
+            }
+        }
+
         public Command SaveCommand { get; }
         public Command CancelCommand { get; }
 
@@ -164,6 +215,18 @@ namespace Meadpanion.ViewModels
 
         private async void OnSave()
         {
+            var status = selectedStatus;
+
+            if (status == "Custom")
+            {
+                status = customStatus;
+            }
+
+            if (selectedStatus != Mead.Status)
+            {
+                lastStatusChanged = DateTime.Today;
+            }
+
             Mead newMead = new Mead()
             {
                 ID = meadID,
@@ -172,13 +235,14 @@ namespace Meadpanion.ViewModels
                 Date = date,
                 Amount = amount,
                 Note = note,
-                Active = true,
+                Status = status,
+                LastStatusChange = lastStatusChanged
             };
             await MeadDataStore.UpdateItemAsync(newMead);
 
             Readings[0].GravityReading = startingGravity;
             Readings[0].Date = date;
-            Readings[0].ABV = "0";
+            //Readings[0].ABV = "0%";
 
             await ReadingDataStore.UpdateItemAsync(Readings[0]);
 

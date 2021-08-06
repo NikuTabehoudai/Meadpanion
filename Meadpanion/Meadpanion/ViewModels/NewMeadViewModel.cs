@@ -15,6 +15,7 @@ namespace Meadpanion.ViewModels
         public IDataStore<Mead> MeadDataStore => DependencyService.Get<IDataStore<Mead>>();
         public IDataStore<Recipe> RecipeDataStore => DependencyService.Get<IDataStore<Recipe>>();
         public IDataStore<Reading> ReadingDataStore => DependencyService.Get<IDataStore<Reading>>();
+        public IDataStore<MeadEvents> MeadEventsDataStore => DependencyService.Get<IDataStore<MeadEvents>>();
 
         private string name;
         private string recipe;
@@ -127,11 +128,15 @@ namespace Meadpanion.ViewModels
                 Date = date,
                 Amount = amount,
                 Note = note,
-                Active = true,
+                Status = "Primary",
+                LastStatusChange = DateTime.Today
+                
              };
             await MeadDataStore.AddItemAsync(newMead);
 
             await ReadingDataStore.AddItemAsync(new Reading() { MeadId = newMead.ID, Date = date, GravityReading = startingGravity, Note = "Original Gravity", ABV = "0", OriginalGravity = true }) ;
+
+            await MeadEventsDataStore.AddItemAsync(new MeadEvents() { MeadId = newMead.ID, Date = date, EventType = "Primary Fermentation" });
 
             // This will pop the current page off the navigation stack
             await Shell.Current.GoToAsync("..");

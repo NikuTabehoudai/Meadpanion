@@ -5,26 +5,28 @@
              x:Class="Meadpanion.Views.ReadingDetailPage"
              Title="{Binding Title}">
 
+
     <ContentPage.ToolbarItems>
         <ToolbarItem Order="Secondary" Priority="1" Name="Delete Reading" Command="{Binding DeleteReadingCommand}"/>
         <ToolbarItem Order="Primary" Priority="1" Name="Edit" Command="{Binding EditReadingCommand}"/>
     </ContentPage.ToolbarItems>
+    
         <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
             <StackLayout HorizontalOptions="Center" Orientation="Vertical" Padding="20">
-                <Label Text="Start Date:" FontSize="Small" HorizontalTextAlignment="Center"/>
-                <Label Text="{Binding Date, Mode=TwoWay}" FontSize="Medium" HorizontalTextAlignment="Center"/>
+                <Label Style="{DynamicResource LabelStyleTitle}" Text="Start Date:" FontSize="Small"/>
+            <Label Style="{DynamicResource LabelStyleBasic}" Text="{Binding Date, Mode=TwoWay}"/>
             </StackLayout>
         <StackLayout HorizontalOptions="Center" Orientation="Vertical" Padding="20">
-                <Label Text="Gravity" FontSize="Small" HorizontalTextAlignment="Center"/>
-                <Label Text="{Binding Gravity, Mode=TwoWay}" FontSize="Medium" HorizontalTextAlignment="Center"/>
+                <Label Style="{DynamicResource LabelStyleTitle}" Text="Gravity" FontSize="Small"/>
+            <Label Style="{DynamicResource LabelStyleBasic}" Text="{Binding Gravity, Mode=TwoWay}"/>
             </StackLayout>
         <StackLayout HorizontalOptions="Center" Orientation="Vertical" Padding="20">
-            <Label Text="ABV" FontSize="Small" HorizontalTextAlignment="Center"/>
-            <Label Text="{Binding ABV, Mode=TwoWay}" FontSize="Medium" HorizontalTextAlignment="Center"/>
+            <Label Style="{DynamicResource LabelStyleTitle}" Text="ABV" FontSize="Small"/>
+            <Label Style="{DynamicResource LabelStyleBasic}" Text="{Binding ABV, Mode=TwoWay}"/>
         </StackLayout>
         <StackLayout HorizontalOptions="Center" Orientation="Vertical" Padding="20">
-                <Label Text="Note" FontSize="Small" HorizontalTextAlignment="Center"/>
-                <Label Text="{Binding Note, Mode=TwoWay}" FontSize="Medium" HorizontalTextAlignment="Center"/>
+                <Label Style="{DynamicResource LabelStyleTitle}" Text="Note" FontSize="Small"/>
+            <Label Style="{DynamicResource LabelStyleBasic}" Text="{Binding Note, Mode=TwoWay}"/>
             </StackLayout>
         </StackLayout>
 </ContentPage>

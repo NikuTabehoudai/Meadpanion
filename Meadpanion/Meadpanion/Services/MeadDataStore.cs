@@ -16,8 +16,7 @@ namespace Meadpanion.Services
 
         public async Task<int> DeleteItemAsync(int ID)
         {
-            var item = await App.Database.GetSingleMeadAsync(ID);
-            return await App.Database.DeleteMeadAsync(item);
+            return await App.Database.DeleteMeadAsync(await GetItemAsync(ID));
         }
 
         public async Task<Mead> GetItemAsync(int id)
@@ -27,8 +26,7 @@ namespace Meadpanion.Services
 
         public async Task<IEnumerable<Mead>> GetItemsAsync(int notused)
         {
-            var meads = await App.Database.GetMeadsAsync();
-            return meads;
+            return await App.Database.GetMeadsAsync();
         }
 
         public async Task<int> UpdateItemAsync(Mead item)

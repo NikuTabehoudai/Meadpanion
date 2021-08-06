@@ -33,6 +33,7 @@ namespace Meadpanion
             DependencyService.Register<MeadDataStore>();
             DependencyService.Register<RecipeDataStore>();
             DependencyService.Register<ReadingDataStore>();
+            DependencyService.Register<EventsDataStore>();
             MainPage = new AppShell();
             GetPersmissions();
         }

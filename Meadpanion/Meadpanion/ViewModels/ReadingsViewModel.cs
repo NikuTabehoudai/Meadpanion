@@ -6,18 +6,23 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Meadpanion.Services;
+using Meadpanion.Util;
 using System.Linq;
+using Meadpanion.Events;
 
 namespace Meadpanion.ViewModels
 {
     [QueryProperty(nameof(MeadID), nameof(MeadID))]
+    [QueryProperty(nameof(StepFed), nameof(StepFed))]
     public class ReadingsViewModel : BaseViewModel
     {
         public IDataStore<Reading> ReadingDataStore => DependencyService.Get<IDataStore<Reading>>();
 
         private Reading _selectedItem;
-
         private int meadID;
+
+        public bool StepFed { get; set; }
+
         public ObservableCollection<Reading> Readings { get; set; }
         public Command LoadReadingsCommand { get; }
         public Command AddReadingCommand { get; }
@@ -54,6 +59,15 @@ namespace Meadpanion.ViewModels
             try
             {
                 Readings.Clear();
+
+                if (StepFed)
+                {
+                    var temp = new StepFeeding();
+                    await temp.Initialize(meadID);
+                    foreach (var item in temp.ReadingList)
+                        Readings.Add(item);
+                }
+                else { 
                 var items = await ReadingDataStore.GetItemsAsync(MeadID);
                 items = items.Where(s => s.MeadId == ID);
                 var og = items.First(s => s.OriginalGravity == true).GravityReading;
@@ -61,12 +75,13 @@ namespace Meadpanion.ViewModels
                 {
                     if (!item.OriginalGravity)
                     {
-                        item.ABV = (Util.ABVCalculator.CalculateABV(og, item.GravityReading));
+                        item.ABV = (Util.ABVCalculator.StringCalculateABV(og, item.GravityReading));
                     }
                     else
                         item.ABV = "0";
 
                     Readings.Add(item);
+                    }
                 }
             }
             catch (Exception ex)
@@ -78,6 +93,7 @@ namespace Meadpanion.ViewModels
                 IsBusy = false;
             }
         }
+
 
         public void OnAppearing()
         {
